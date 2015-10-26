@@ -8,7 +8,7 @@ var COMPILER_OPTIONS = {
 };
 
 var processFiles = function (files) {
-    //console.log('\nTypeScript compiling files:');
+    console.log('\nTypeScript compiling files:');
     files.forEach(processFile);
 };
 
@@ -36,7 +36,7 @@ function processFile(file) {
         // Add a module name to it, so we can use SystemJS to import it by name.
         output = output.replace("System.register([", 'System.register("' + moduleName + '",[');
 
-        //console.log('  ' + inputFile);
+        console.log('  ' + inputFile);
     
         // Update the code cache
         fileContentsCache[inputFile] = {hash: currentHash, code: output};
