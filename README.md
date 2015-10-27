@@ -10,7 +10,7 @@ After that, only changed files will be recompiled as you make changes and save t
 ### Install
 
 ```bash
-meteor install pbastowski:typescript
+meteor add pbastowski:typescript
 ```
 
 ### Usage
