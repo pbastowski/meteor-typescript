@@ -10,7 +10,7 @@ Package.onUse(function (api) {
     api.versionsFrom('1.1.0.2');
 
     api.use('isobuild:compiler-plugin@1.0.0');
-    api.use('pbastowski:systemjs');
+    api.use('pbastowski:systemjs@0.0.1');
 
 });
 
