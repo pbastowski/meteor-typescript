@@ -29,9 +29,16 @@ function processFile(file) {
     
     // Only compile files that have changed since the last run
     if (!lastHash || lastHash !== currentHash ) {
-        
+        var options = COMPILER_OPTIONS;
+
+        // On the server do not create modules. Just transpile the code as is.
+        if (/^server\//.test(inputFile))
+            options.module = typescript.ModuleKind.Common;
+        else
+            options.module = typescript.ModuleKind.System;
+
         // Compile code
-        var output = typescript.transpile(contents, COMPILER_OPTIONS);
+        var output = typescript.transpile(contents, options);
         
         // Add a module name to it, so we can use SystemJS to import it by name.
         output = output.replace("System.register([", 'System.register("' + moduleName + '",[');
