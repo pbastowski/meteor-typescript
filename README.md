@@ -40,3 +40,14 @@ followed by `client/feature1/feature1`.
 import "client/app/app";
 import 'client/feature1/feature1';
 ```
+
+### Modules
+
+The TypeScript compiler can output different types of module wrappers, including 
+CommonJS and SystemJS. On the backend commonjs modules are created and on the 
+front-end we use SystemJS modules.
+
+As a convention, do not mix front-end and back-end code in the same module, even
+if you wrap each code section with `Meteor.isClient` or `Meteor.isServer`. Instead,
+put files destined for the client side in the `client` folder of your app, and those 
+destined for the server side in the `server` folder.
