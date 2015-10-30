@@ -32,11 +32,13 @@ function processFile(file) {
         var options = COMPILER_OPTIONS;
 
         // On the server do not create modules. Just transpile the code as is.
-        if (/^server\//.test(inputFile))
+        //if (/^server\//.test(inputFile))
+        if (file._resourceSlot.packageSourceBatch.unibuild.arch === 'os') {
             options.module = typescript.ModuleKind.Common;
-        else
+        } else {
             options.module = typescript.ModuleKind.System;
-
+        }
+        
         // Compile code
         var output = typescript.transpile(contents, options);
         
@@ -44,6 +46,7 @@ function processFile(file) {
         output = output.replace("System.register([", 'System.register("' + moduleName + '",[');
 
         console.log('  ' + inputFile);
+        //if (inputFile === 'model/parties.ts' || inputFile === 'client/party/party.ts') console.log('  ' + inputFile, file);
     
         // Update the code cache
         fileContentsCache[inputFile] = {hash: currentHash, code: output};
