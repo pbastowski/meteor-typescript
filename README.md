@@ -58,7 +58,10 @@ import 'client/feature1/feature1';
 
 #### The old way... without SystemJS
 
-If you want a different module system on the client side, like when you're not using 
+What I really mean by "the old way" is that you can use this package, in most cases, 
+as a direct replacement for Babel/ecmascript in your existing Meteor apps.  
+
+So, if you want a different module system on the client side, like when you're not using 
 SystemJS, for example, then you can specify it in a **tsconfig.json** file located 
 in the root directory of your app. The contents of this file must be as shown below.
 The only option read from this file is the `module` setting. Everything else is 
