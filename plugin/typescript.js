@@ -13,7 +13,7 @@ Object.keys(typescript.ModuleKind).forEach(function(i) {
     typescript.ModuleKind[i.toLowerCase()] = typescript.ModuleKind[i];
 });
 
-// Merge in any optional custom compiler-options specified in 
+// Merge in any optional custom compiler-options specified in
 // the tsconfig.json file located in the app root directory.
 // tsconfig.json is completely optional.
 var customConfig = getCustomConfig();
@@ -33,10 +33,10 @@ var fileContentsCache = {  };
 
 function processFile(file) {
     var inputFile = file.getPathInPackage();
-    
+
     // Don't compile ".d.ts" file
     if (/\.d\.ts$/.test(inputFile)) return;
-    
+
     // This is the contents of the file
     var contents = file.getContentsAsString();
 
@@ -49,7 +49,7 @@ function processFile(file) {
 
     // Only compile files that have changed since the last run
     if (!lastHash || lastHash !== currentHash ) {
-        var options = COMPILER_OPTIONS;
+        var options = merge({}, COMPILER_OPTIONS);
 
         // On the server do not create modules. Just transpile the code as is.
         if (file._resourceSlot.packageSourceBatch.unibuild.arch === 'os') {
@@ -57,7 +57,7 @@ function processFile(file) {
         } else {
             options.module = COMPILER_OPTIONS.module;
         }
-        
+
         // Compile code
         try {
             var output = typescript.transpile(contents, options);
@@ -73,16 +73,16 @@ function processFile(file) {
         // Add a module name to it, so we can use SystemJS to import it by name.
         output = output.replace("System.register([", 'System.register("' + moduleName + '",[');
 
-        console.log('  ' + inputFile);
-    
+        console.log('  ' + inputFile, '(', typescript.ModuleKind[options.module], ')'); //, file._resourceSlot.packageSourceBatch.unibuild.arch);
+
         // Update the code cache
         fileContentsCache[inputFile] = {hash: currentHash, code: output};
-        
+
     } else {
         // Pull the code from the cache
         output = fileContentsCache[inputFile].code;
     }
-    
+
     file.addJavaScript({
         data: output,
         path: outputFile
