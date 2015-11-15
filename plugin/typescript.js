@@ -21,8 +21,10 @@ if (customConfig.compilerOptions && customConfig.compilerOptions.module) {
     var mdl = typescript.ModuleKind[customConfig.compilerOptions.module.toLowerCase()];
     if (mdl === 'undefined') mdl = 'System';
     COMPILER_OPTIONS.module = mdl;
-    console.log('client modules: ', mdl);
+    console.log('TypeScript plugin: Client modules will be transpiled to', mdl, ' module format.');
 }
+
+//console.log('SystemJS: ', Package['pbastowski:systemjs'], Object.keys(Package));
 
 var processFiles = function (files) {
     console.log('\nTypeScript compiling files:');
