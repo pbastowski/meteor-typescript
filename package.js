@@ -2,7 +2,7 @@ Package.describe({
     name:          'pbastowski:typescript',
     version:       '0.0.8',
     summary:       'Typescript compiler for Meteor 1.2',
-    git:           'https://github.com/pbastowski/typescript.git',
+    git:           'https://github.com/pbastowski/meteor-typescript',
     documentation: 'README.md'
 });
 
