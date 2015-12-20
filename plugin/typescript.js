@@ -4,7 +4,10 @@ var COMPILER_OPTIONS = {
     module:                     typescript.ModuleKind.System,
     target:                     typescript.ScriptTarget.ES5,
     emitDecoratorMetadata:      true,
-    experimentalAsyncFunctions: true
+    experimentalAsyncFunctions: true,
+    //sourceMap:                  true,
+    inlineSourceMap:            true,
+    inlineSources:              true
 };
 
 // Add lowercase versions of module kinds to typescript.ModuleKind
@@ -62,7 +65,9 @@ function processFile(file) {
 
         // Compile code
         try {
-            var output = typescript.transpile(contents, options);
+            //var output = typescript.transpile(contents, options);
+            var output = typescript.transpile(contents, options, inputFile);
+            //transpile(input: string, compilerOptions?: ts.CompilerOptions, fileName?: string, diagnostics?: ts.Diagnostic[]): string;
         } catch (e) {
             console.log(e);
             return file.error({
