@@ -1,6 +1,6 @@
 ## Typescript compiler for Meteor 1.2
 
-This package implements TypeScript 1.6.2. It will only work with Meteor 1.2.
+This package implements TypeScript 1.7.5. It will only work with Meteor 1.2.
 
 The TypeScript Meteor plugin caches the generated code between builds to speed up your workflow. When you first start (or restart) Meteor, all files will be compiled by TypeScript. After that, only changed files will be recompiled, as you make changes and save them.
 
