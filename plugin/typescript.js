@@ -5,7 +5,6 @@ var COMPILER_OPTIONS = {
     target:                     typescript.ScriptTarget.ES5,
     emitDecoratorMetadata:      true,
     experimentalAsyncFunctions: true,
-    //sourceMap:                  true,
     inlineSourceMap:            true,
     inlineSources:              true
 };
@@ -26,8 +25,6 @@ if (customConfig.compilerOptions && customConfig.compilerOptions.module) {
     COMPILER_OPTIONS.module = mdl;
     console.log('TypeScript plugin: Client modules will be transpiled to', mdl, ' module format.');
 }
-
-//console.log('SystemJS: ', Package['pbastowski:systemjs'], Object.keys(Package));
 
 var processFiles = function (files) {
     console.log('\nTypeScript compiling files:');
@@ -65,9 +62,9 @@ function processFile(file) {
 
         // Compile code
         try {
-            //var output = typescript.transpile(contents, options);
+            // The transpile method has rhe following interface:
+            //     transpile(input: string, compilerOptions?: ts.CompilerOptions, fileName?: string, diagnostics?: ts.Diagnostic[]): string
             var output = typescript.transpile(contents, options, inputFile);
-            //transpile(input: string, compilerOptions?: ts.CompilerOptions, fileName?: string, diagnostics?: ts.Diagnostic[]): string;
         } catch (e) {
             console.log(e);
             return file.error({
