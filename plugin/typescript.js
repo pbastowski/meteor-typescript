@@ -1,7 +1,8 @@
 var typescript = Npm.require('typescript');
 
 var COMPILER_OPTIONS = {
-    module:                     typescript.ModuleKind.System,
+    //module:                     1, // 1=commonjs typescript.ModuleKind.System,
+    module:                     typescript.ModuleKind.CommonJS,
     target:                     typescript.ScriptTarget.ES5,
     emitDecoratorMetadata:      true,
     experimentalAsyncFunctions: true,
@@ -23,7 +24,7 @@ if (customConfig.compilerOptions && customConfig.compilerOptions.module) {
     var mdl = typescript.ModuleKind[customConfig.compilerOptions.module.toLowerCase()];
     if (mdl === 'undefined') mdl = 'System';
     COMPILER_OPTIONS.module = mdl;
-    console.log('TypeScript plugin: Client modules will be transpiled to', mdl, ' module format.');
+    //console.log('TypeScript plugin: Client modules will be transpiled to', mdl, ' module format.');
 }
 
 var processFiles = function (files) {

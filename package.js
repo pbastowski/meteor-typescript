@@ -1,17 +1,16 @@
 Package.describe({
     name:          'pbastowski:typescript',
-    version:       '0.0.9',
-    summary:       'Typescript compiler for Meteor 1.2',
+    version:       '1.3.0',
+    summary:       'Typescript compiler for Meteor 1.3',
     git:           'https://github.com/pbastowski/meteor-typescript',
     documentation: 'README.md'
 });
 
 Package.onUse(function (api) {
-    api.versionsFrom('1.1.0.2');
+    api.versionsFrom('METEOR@1.3-rc.3');
 
     api.use('isobuild:compiler-plugin@1.0.0');
-    //api.use('pbastowski:systemjs@0.0.1', 'client', { weak: true });
-
+    api.imply('modules');
 });
 
 Package.registerBuildPlugin({
@@ -20,7 +19,7 @@ Package.registerBuildPlugin({
     'plugin/typescript.js'
   ],
   npmDependencies : {
-    'typescript' : '1.7.5'
+    'typescript' : '1.8.9'
   }
 });
 
