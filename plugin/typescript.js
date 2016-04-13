@@ -10,6 +10,8 @@ var COMPILER_OPTIONS = {
     inlineSources:              true
 };
 
+var extensions = ['ts'];
+
 // Add lowercase versions of module kinds to typescript.ModuleKind
 // so that we can look up their ids later.
 Object.keys(typescript.ModuleKind).forEach(function(i) {
@@ -26,6 +28,8 @@ if (customConfig.compilerOptions && customConfig.compilerOptions.module) {
     COMPILER_OPTIONS.module = mdl;
     //console.log('TypeScript plugin: Client modules will be transpiled to', mdl, ' module format.');
 }
+if (customConfig.extensions)
+    extensions = customConfig.extensions;
 
 var processFiles = function (files) {
     console.log('\nTypeScript compiling files:');
@@ -94,8 +98,9 @@ function processFile(file) {
     });
 }
 
+console.log('EXTENSIONS: ', extensions);
 Plugin.registerCompiler({
-    extensions: ['ts'],
+    extensions: extensions,
     filenames:  []
 
 }, function () {
