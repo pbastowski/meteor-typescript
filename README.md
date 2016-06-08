@@ -22,6 +22,10 @@ By default only files with the ".ts" extension will be transpiled. But, if you w
 
 ## Changelog
 
+### 2016-06-08 v1.3.2
+
+- Fixed source map support with Meteor 1.3
+
 ### 2016-03-20 v1.3.1
 
 - You can now configure this package to transpile ".js" files also, thus entirely removing the need for Babel. Some features, such as async/await, are not supported by typescript 1.8.9, so, if you need those then you will still need Babel.

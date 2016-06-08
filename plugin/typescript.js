@@ -1,4 +1,5 @@
 var typescript = Npm.require('typescript');
+var fs = Npm.require('fs');
 
 var COMPILER_OPTIONS = {
     //module:                     1, // 1=commonjs typescript.ModuleKind.System,
@@ -6,8 +7,10 @@ var COMPILER_OPTIONS = {
     target:                     typescript.ScriptTarget.ES5,
     emitDecoratorMetadata:      true,
     experimentalAsyncFunctions: true,
-    inlineSourceMap:            true,
-    inlineSources:              true
+    sourceMap:                  true,
+    // moduleResolution:           'node',
+    // inlineSourceMap:            true,
+    // inlineSources:              true
 };
 
 var extensions = ['ts'];
@@ -44,6 +47,9 @@ function processFile(file) {
     // Don't compile ".d.ts" file
     if (/\.d\.ts$/.test(inputFile)) return;
 
+    // Don't compile ".ts" files in node_modules
+    if (/node_modules\/.*\.ts$/.test(inputFile)) return;
+
     // This is the contents of the file
     var contents = file.getContentsAsString();
 
@@ -52,7 +58,8 @@ function processFile(file) {
     var currentHash = file.getSourceHash();
 
     var moduleName = inputFile.replace(/\\/g, '/').replace('.ts', '');
-    var outputFile = inputFile.replace('.ts', '.js');
+    // var outputFile = inputFile.replace('.ts', '.js');
+    var outputFile = Plugin.convertToStandardPath(file.getPathInPackage());
 
     // Only compile files that have changed since the last run
     if (!lastHash || lastHash !== currentHash ) {
@@ -69,7 +76,36 @@ function processFile(file) {
         try {
             // The transpile method has rhe following interface:
             //     transpile(input: string, compilerOptions?: ts.CompilerOptions, fileName?: string, diagnostics?: ts.Diagnostic[]): string
-            var output = typescript.transpile(contents, options, inputFile);
+            // var output = typescript.transpile(contents, options, inputFile);
+
+            // transpileModule(input: string, transpileOptions: TranspileOptions): TranspileOutput
+            // export interface TranspileOutput {
+            //     outputText: string;
+            //     diagnostics?: Diagnostic[];
+            //     sourceMapText?: string;
+            // }
+            var tsOutput = typescript.transpileModule(
+                contents,
+                {
+                    compilerOptions: options,
+                    fileName: inputFile
+                }
+            );
+            tsOutput.outputText = tsOutput.outputText.replace(/\/\/# sourceMappingURL=.*/,'');
+            var output = tsOutput.outputText;
+            var sourceMap = tsOutput.sourceMapText;
+
+            // Correct the file paths returned by transpileModule()
+            // and add the source code to it.
+            sourceMap = JSON.parse(sourceMap);
+            sourceMap.sourcesContent = [ contents ];
+            sourceMap.file = '/' + inputFile;
+            sourceMap.sources = [sourceMap.file];
+            delete sourceMap.sourceRoot;
+            sourceMap = JSON.stringify(sourceMap, null, 4);
+
+            //console.log('OUTPUT: ', tsOutput);
+
         } catch (e) {
             console.log(e);
             return file.error({
@@ -85,20 +121,24 @@ function processFile(file) {
         console.log('  ' + inputFile, '(', typescript.ModuleKind[options.module], ')'); //, file._resourceSlot.packageSourceBatch.unibuild.arch);
 
         // Update the code cache
-        fileContentsCache[inputFile] = {hash: currentHash, code: output};
+        fileContentsCache[inputFile] = {hash: currentHash, code: output, map: sourceMap};
 
     } else {
         // Pull the code from the cache
         output = fileContentsCache[inputFile].code;
+        sourceMap = fileContentsCache[inputFile].map;
     }
+
+    //console.log('TTTTTTTTT: ', sourceMap);
 
     file.addJavaScript({
         data: output,
-        path: outputFile
+        path: outputFile,
+        sourceMap: JSON.parse(sourceMap)
     });
 }
 
-console.log('EXTENSIONS: ', extensions);
+//console.log('EXTENSIONS: ', extensions);
 Plugin.registerCompiler({
     extensions: extensions,
     filenames:  []
@@ -114,7 +154,7 @@ Plugin.registerCompiler({
 
 function getCustomConfig() {
     var path = Plugin.path;
-    var fs = Plugin.fs;
+    // var fs = Plugin.fs;
 
     var appdir = process.env.PWD || process.cwd();
     var custom_config_filename = path.join(appdir, 'tsconfig.json');
