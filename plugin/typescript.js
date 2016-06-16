@@ -1,6 +1,9 @@
 var typescript = Npm.require('typescript');
 var fs = Npm.require('fs');
 
+var jade = Npm.require('jade');
+var jadeOpts = { compileDebug:false };
+
 var COMPILER_OPTIONS = {
     //module:                     1, // 1=commonjs typescript.ModuleKind.System,
     module:                     typescript.ModuleKind.CommonJS,
@@ -52,6 +55,10 @@ function processFile(file) {
 
     // This is the contents of the file
     var contents = file.getContentsAsString();
+
+    // process embedded jade first
+    contents = processEmbeddedJade(contents);
+    // console.log('TEMPLATE: ', inputFile, '\n', contents);
 
     // Get file previous and current file contents hashes
     var lastHash = fileContentsCache[inputFile] && fileContentsCache[inputFile].hash;
@@ -129,8 +136,6 @@ function processFile(file) {
         sourceMap = fileContentsCache[inputFile].map;
     }
 
-    //console.log('TTTTTTTTT: ', sourceMap);
-
     file.addJavaScript({
         data: output,
         path: outputFile,
@@ -138,7 +143,6 @@ function processFile(file) {
     });
 }
 
-//console.log('EXTENSIONS: ', extensions);
 Plugin.registerCompiler({
     extensions: extensions,
     filenames:  []
@@ -171,4 +175,30 @@ function merge (destination, source) {
     for (var property in source)
         destination[property] = source[property];
     return destination;
+}
+
+function processEmbeddedJade(str) {
+    var found;
+
+    // Look for ES6 strings preceded with the word jade or JADE
+    // and compile the string contents with the JADE compiler.
+    while (found = str.match(/jade`([\s\S]*?)`/i)) {
+        try {
+            // Extract the jade
+            var content = found[1] + '\n';
+            var output  = '';
+
+            // console.log('CONTENT:', content);
+
+            // Run it through the JADE compiler
+            output = jade.compile(content, jadeOpts)();
+            str = str.replace(/jade`([\s\S]*?)`/i, '`' + output + '`');
+
+        } catch (er) {
+            return er;
+            throw new TypeError(er);
+        }
+    }
+
+    return str;
 }

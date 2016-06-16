@@ -1,14 +1,14 @@
-## Typescript compiler for Meteor 1.3
+# Typescript compiler for Meteor 1.3
 
 This package implements TypeScript 1.8.9. It will only work with Meteor 1.3, because it depends on the `modules` package.
 
 The TypeScript Meteor plugin caches the generated code between builds to speed up your workflow. When you first start (or restart) Meteor, all files will be compiled by TypeScript. After that, only changed files will be recompiled, as you make changes and save them.
 
-### Install
+## Install
 
     meteor add pbastowski:typescript
 
-#### tsconfig.json
+## tsconfig.json
 
 For Meteor 1.3 this package allows you to configure just one option in `tsconfig.json`
 
@@ -20,7 +20,42 @@ For Meteor 1.3 this package allows you to configure just one option in `tsconfig
 
 By default only files with the ".ts" extension will be transpiled. But, if you want also to transpile ".js" files then add the config above to your tsconfig.json.
 
+## JADE inline templates
+
+JADE tagged template strings are compiled to HTML first, before passing the code through the TypeScript compiler. I know, the previous sentence probably sounds like gibberish, so, let's have a look at the example below.
+
+> **Notice** the `jade` tag before the template string, below.
+
+**JADE template**
+```javascript
+@Component({
+    selector: 'my-app',
+    template: jade`h2 This is my app`       // JADE inline template
+})
+```
+
+is compiled to the following
+
+**HTML template**
+```javascript
+@Component({
+    selector: 'my-app',
+    template: `<h2>This is my app</h2>`    // HTML inline template
+})
+```
+
+### Is this valid JavaScript?
+
+Yes it is. The ES2016 standard, which TypeScript is a super-set of, supports something called "tagged template literals". The word `jade` is the **tag** for the template string <code>\`h2 This is my app\`</code>. So, this is valid ES2015 code, which should not create linting errors in your IDE or editor.
+
+Read more about [Tagged template literals] (https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Template_literals).
+
+
 ## Changelog
+
+### 2016-06-16 v1.3.4
+
+- Added ability to process embedded JADE templates
 
 ### 2016-06-16 v1.3.3
 
