@@ -1,6 +1,6 @@
 # Typescript compiler for Meteor 1.3
 
-This package implements TypeScript 1.8.9. It will only work with Meteor 1.3, because it depends on the `modules` package.
+This package implements TypeScript 1.9.x. It will only work with Meteor 1.3, because it depends on the `modules` package.
 
 The TypeScript Meteor plugin caches the generated code between builds to speed up your workflow. When you first start (or restart) Meteor, all files will be compiled by TypeScript. After that, only changed files will be recompiled, as you make changes and save them.
 
