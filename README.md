@@ -22,6 +22,11 @@ By default only files with the ".ts" extension will be transpiled. But, if you w
 
 ## Changelog
 
+### 2016-06-16 v1.3.3
+
+- Updated TypeScript to 1.9.0-dev.20160615-1.0
+- Changed Meteor versionsFrom to 1.3
+
 ### 2016-06-08 v1.3.2
 
 - Fixed source map support with Meteor 1.3
