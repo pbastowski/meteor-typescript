@@ -53,6 +53,10 @@ Read more about [Tagged template literals] (https://developer.mozilla.org/en/doc
 
 ## Changelog
 
+### 2016-07-12 v1.3.5
+
+- Updated TypeScript to 2.0.0
+
 ### 2016-06-16 v1.3.4
 
 - Added ability to process embedded JADE templates
