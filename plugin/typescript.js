@@ -11,6 +11,7 @@ var COMPILER_OPTIONS = {
     emitDecoratorMetadata:      true,
     experimentalAsyncFunctions: true,
     sourceMap:                  true,
+    sourceMap:                  true,
     // moduleResolution:           'node',
     // inlineSourceMap:            true,
     // inlineSources:              true

@@ -19,7 +19,7 @@ Package.registerBuildPlugin({
         'plugin/typescript.js'
     ],
     npmDependencies: {
-        'typescript': '2.0.0',
+        'typescript': '2.1.0-dev.20160808',
         'jade':       '1.11.0'
     }
 });
