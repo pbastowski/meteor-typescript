@@ -10,7 +10,11 @@ The TypeScript Meteor plugin caches the generated code between builds to speed u
 
 ## tsconfig.json
 
-For Meteor 1.3 this package allows you to configure just one option in `tsconfig.json`
+For Meteor 1.3 this package allows you to configure the following options in `tsconfig.json`
+
+#### Transpiling `.js` files
+
+By design, only files with the ".ts" extension will be transpiled by TypeScript into JavaScript. But, if you want also to also transpile ".js" files then add the config below to your `tsconfig.json`.
 
 ```json
 {
@@ -18,7 +22,23 @@ For Meteor 1.3 this package allows you to configure just one option in `tsconfig
 }
 ```
 
-By default only files with the ".ts" extension will be transpiled. But, if you want also to transpile ".js" files then add the config above to your tsconfig.json.
+#### Partial `templateUrl` support for Angular 2
+
+HTML files are compiled down to JavaScript files that export the template as text. This means that it is virtually impossible to also use these HTML templates in the Angular 2 `templateUrl` property. To get around this limitation we can let the TypeScript plugin change the following code for us from  
+
+    templateUrl: './myFile.html'
+    
+to
+
+    template: require('./myFile.html').default
+
+This will simulate templateUrls, but not actually implement them as such. So, this will work for any code that you are compiling, but not for external libraries, which are not compiled with the plugin.
+
+```json
+{
+    "replaceTemplateUrlWithTemplate": true
+}
+```
 
 ## JADE inline templates
 
