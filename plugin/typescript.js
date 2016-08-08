@@ -57,6 +57,13 @@ function processFile(file) {
     // This is the contents of the file
     var contents = file.getContentsAsString();
 
+    // Convert templateUrl: 'xxxx' to template: require('xxxx').default
+    if (customConfig.replaceTemplateUrlWithTemplate) {
+        if (/templateUrl:\s*?(['"][^\s]+?['"])/.test(contents)) {
+            contents = contents.replace(/templateUrl:\s*?(['"][^\s]+?['"])/g, 'template: require($1).default');
+        }
+    }
+
     // process embedded jade first
     contents = processEmbeddedJade(contents);
     // console.log('TEMPLATE: ', inputFile, '\n', contents);
