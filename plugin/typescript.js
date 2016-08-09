@@ -52,7 +52,7 @@ function processFile(file) {
     if (/\.d\.ts$/.test(inputFile)) return;
 
     // Don't compile ".ts" files in node_modules
-    if (/node_modules\/.*\.ts$/.test(inputFile)) return;
+    if (!customConfig.compileNodeModules && /node_modules\/.*\.ts$/.test(inputFile)) return;
 
     // This is the contents of the file
     var contents = file.getContentsAsString();

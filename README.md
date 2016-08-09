@@ -1,6 +1,6 @@
-# Typescript compiler for Meteor 1.3
+# Typescript compiler for Meteor 1.3+
 
-This package implements TypeScript 1.9.x. It will only work with Meteor 1.3, because it depends on the `modules` package.
+This package implements TypeScript 2.1.x (nightlies). It will only work with Meteor 1.3, because it depends on the `modules` package.
 
 The TypeScript Meteor plugin caches the generated code between builds to speed up your workflow. When you first start (or restart) Meteor, all files will be compiled by TypeScript. After that, only changed files will be recompiled, as you make changes and save them.
 
@@ -40,6 +40,16 @@ This will simulate templateUrls, but not actually implement them as such. So, th
 }
 ```
 
+#### Optionally transpile node_modules
+
+If `compileNodeModules` is true in `tsconfig.json`, then JavaScript files in node_modules will also be transpiled. If absent or `false` JavaScript files in node_modules will not be transpiled.
+
+```json
+{
+    "compileNodeModules": true
+}
+```
+
 ## JADE inline templates
 
 JADE tagged template strings are compiled to HTML first, before passing the code through the TypeScript compiler. I know, the previous sentence probably sounds like gibberish, so, let's have a look at the example below.
@@ -72,6 +82,16 @@ Read more about [Tagged template literals] (https://developer.mozilla.org/en/doc
 
 
 ## Changelog
+
+### 2016-08-09 v1.3.7
+
+- Updated TypeScript to 2.1.0 nightly
+- Added `compileNodeModules` tsconfig.json option. If absent or false JavaScript files in node_modules will not be transpiled.
+
+### 2016-08-08 v1.3.6
+
+- Updated TypeScript to 2.1.0 nightly
+- Added ability to transpile `templateUrl: 'xxx'` to `template: require('xxx).default`
 
 ### 2016-07-12 v1.3.5
 
