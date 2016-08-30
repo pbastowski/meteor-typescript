@@ -133,6 +133,9 @@ function processFile(file) {
         // Add a module name to it, so we can use SystemJS to import it by name.
         output = output.replace("System.register([", 'System.register("' + moduleName + '",[');
 
+        if (file._resourceSlot.packageSourceBatch.unibuild.arch !== 'os')
+            output = esModuleFix(output);
+
         console.log('  ' + inputFile, '(', typescript.ModuleKind[options.module], ')'); //, file._resourceSlot.packageSourceBatch.unibuild.arch);
 
         // Update the code cache
@@ -144,11 +147,33 @@ function processFile(file) {
         sourceMap = fileContentsCache[inputFile].map;
     }
 
+    //if (inputFile == 'server/main.ts') console.log(output);
+
     file.addJavaScript({
         data: output,
         path: outputFile,
         sourceMap: JSON.parse(sourceMap)
     });
+
+    function esModuleFix(output) {
+        // We are going to enable "synthetic" default imports, which
+        // TypeScript does not support by default, but Babel does.
+        // Things like `import angular from 'angular'` will now work
+        // the same as they do with Babel.
+        if (output.indexOf('Object.defineProperty(exports, "__esModule"') === -1) {
+            output = output
+                // + '\nmodule.exports = exports.default;'
+                + '\nObject.defineProperty(exports, "__esModule", { value: true });\n'
+        }
+
+        if (output.indexOf('require(')!==-1) {
+            output = 'var oldRequire = require;\n'
+                + 'require = function() { var m = oldRequire.apply(this, Array.prototype.slice.call(arguments)); if (m && !m.__esModule) m = { default: m }; return m };\n'
+                + output
+        }
+
+        return output;
+    }
 }
 
 Plugin.registerCompiler({

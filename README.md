@@ -83,6 +83,11 @@ Read more about [Tagged template literals] (https://developer.mozilla.org/en/doc
 
 ## Changelog
 
+### 2016-08-30 v1.3.8
+
+- Updated TypeScript to 2.1.0-dev.20160830 nightly
+- Added custom `require` function to each generated module to handle synthetic default imports, i.e. imports from `module.exports` instead of `exports.default`. This enables us to do `import angular from 'angular'` using TypeScript, just like Babel, instead of having to do this `var angular = require('angular')`.
+
 ### 2016-08-09 v1.3.7
 
 - Updated TypeScript to 2.1.0 nightly
