@@ -1,5 +1,5 @@
 Package.describe({
-    name:          'xpbastowski:typescript',
+    name:          'pbastowski:typescript',
     version:       '1.3.11',
     summary:       'Typescript compiler for Meteor 1.3+',
     git:           'https://github.com/pbastowski/meteor-typescript',
