@@ -83,6 +83,11 @@ Read more about [Tagged template literals] (https://developer.mozilla.org/en/doc
 
 ## Changelog
 
+### 2016-08-30 v1.3.11
+
+- Updated TypeScript to 2.1.0-dev.20160911 nightly
+- Changed the custom `require` function, because there were still issues with some imports. Now it seems to behave the same as what you expect to get from Babel.  
+
 ### 2016-08-30 v1.3.8
 
 - Updated TypeScript to 2.1.0-dev.20160830 nightly
