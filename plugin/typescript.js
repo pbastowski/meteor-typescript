@@ -160,15 +160,15 @@ function processFile(file) {
         // TypeScript does not support by default, but Babel does.
         // Things like `import angular from 'angular'` will now work
         // the same as they do with Babel.
-        if (output.indexOf('Object.defineProperty(exports, "__esModule"') === -1) {
-            output = output
-                // + '\nmodule.exports = exports.default;'
-                + '\nObject.defineProperty(exports, "__esModule", { value: true });\n'
-        }
+
+        // if (output.indexOf('Object.defineProperty(exports, "__esModule"') === -1) {
+        //     output = output
+        //         // '\nmodule.exports = exports["default"];'
+        //         + '\nObject.defineProperty(exports, "__esModule", { value: true });\n'
+        // }
 
         if (output.indexOf('require(')!==-1) {
-            output = 'var oldRequire = require;\n'
-                + 'require = function() { var m = oldRequire.apply(this, Array.prototype.slice.call(arguments)); if (m && !m.__esModule) m = { default: m }; return m };\n'
+            output = 'var oldRequire = require; require = function() { var m = oldRequire.apply(this, Array.prototype.slice.call(arguments)); if (m && !m.__esModule) m["default"]= m; return m };\n'
                 + output
         }
 
