@@ -168,7 +168,7 @@ function processFile(file) {
         // }
 
         if (output.indexOf('require(')!==-1) {
-            output = 'var oldRequire = require; require = function() { var m = oldRequire.apply(this, Array.prototype.slice.call(arguments)); if (m && !m.__esModule) m["default"]= m; return m };\n'
+            output = 'var oldRequire = require; require = function() { var m = oldRequire.apply(this, Array.prototype.slice.call(arguments)); if (m && !m.__esModule) m["default"]= m; return m };'
                 + output
         }
 
