@@ -125,8 +125,8 @@ function processFile(file) {
             console.log(e);
             return file.error({
                 message:    'TypeScript compilation error',
-                line:       e.loc.line,
-                column:     e.loc.column
+                line:       (e.loc || {}).line,
+                column:     (e.loc || {}).column
             });
         }
 

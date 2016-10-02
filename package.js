@@ -1,6 +1,6 @@
 Package.describe({
     name:          'pbastowski:typescript',
-    version:       '1.3.12',
+    version:       '1.3.13',
     summary:       'Typescript compiler for Meteor 1.3+',
     git:           'https://github.com/pbastowski/meteor-typescript',
     documentation: 'README.md'
@@ -19,7 +19,7 @@ Package.registerBuildPlugin({
         'plugin/typescript.js'
     ],
     npmDependencies: {
-        'typescript': '2.1.0-dev.20160911',
+        'typescript': '2.1.0-dev.20161002',
         'jade':       '1.11.0'
     }
 });
