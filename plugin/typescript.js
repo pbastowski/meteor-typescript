@@ -211,27 +211,16 @@ function merge (destination, source) {
 }
 
 function processEmbeddedJade(str) {
-    var found;
-
     // Look for ES6 strings preceded with the word jade or JADE
     // and compile the string contents with the JADE compiler.
-    while (found = str.match(/jade`([\s\S]*?)`/i)) {
+    str.replace(/jade ?`([\s\S]*?)`/ig, function (outer, inner, c) {
         try {
-            // Extract the jade
-            var content = found[1] + '\n';
-            var output  = '';
-
-            // console.log('CONTENT:', content);
-
-            // Run it through the JADE compiler
-            output = jade.compile(content, jadeOpts)();
-            str = str.replace(/jade`([\s\S]*?)`/i, '`' + output + '`');
-
+            if (inner[0]==='\n') inner = inner.slice(1)
+            return jade.compile(inner, jadeOpts)()
         } catch (er) {
-            return er;
-            throw new TypeError(er);
+            throw new Error(er)
         }
-    }
+    })
 
     return str;
 }

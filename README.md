@@ -83,6 +83,11 @@ Read more about [Tagged template literals] (https://developer.mozilla.org/en/doc
 
 ## Changelog
 
+### 2016-11-13 v1.3.14
+
+- Updated TypeScript to 2.2.0-dev.20161113 nightly - Object spreads are now built-in
+- Simplified the JADE inline template (in TypeScript) algorithm
+
 ### 2016-10-02 v1.3.13
 
 - Updated TypeScript to 2.1.0-dev.20161002 nightly
